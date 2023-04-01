@@ -1,24 +1,56 @@
-import React from "react";
+import React, {useState} from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
-//create your first component
 const Home = () => {
+
+const [newItem, setNewItem]=useState("");
+const [items, setItems]=useState([])
+
+const addItem=()=>{
+
+	if(!newItem){
+		alert("Add an item");
+		return
+	}
+
+	const item={
+		id: Math.floor(Math.random () * 1000),
+		value: newItem
+	}
+
+	setItems(oldList => [...oldList, item]);
+	setNewItem("")
+}
+
+const deleteItem=(id)=>{
+	const newArray = items.filter(item=> item.id!==id);
+	setItems(newArray);
+}
+
+const deleteAll=()=>{
+	setItems([]);
+}
 	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+		<div className="wrapper">
+			<div className="title">
+				<p>To Do List</p>
+			</div>
+			<div className="input">
+				<input className="input" type="text" placeholder="Add a new task" value={newItem} onChange={e=>setNewItem(e.target.value)} />
+				<button type="button" class="btn btn-success ms-2" onClick={()=> addItem()}>Add</button>
+			</div>
+			<div className="tasklist">
+				<ul className="list">
+					{items.map(item=>{
+						return(
+							<li className = "listItem"key={item.id}>{item.value}<p className="deleteItem" onClick={()=> deleteItem(item.id)}><i class="fa-solid fa-trash"></i></p></li>
+						)
+					})}
+				</ul>
+			</div>
+			<div className="counter">
+				<p className="remaining">Tasks remaining: {items.length}</p>
+			</div>
+			<button type="button" class="btn btn-danger" onClick={deleteAll}>Delete all</button>
 		</div>
 	);
 };
