@@ -27,7 +27,15 @@ const deleteItem=(id)=>{
 }
 
 const deleteAll=()=>{
-	setItems([]);
+	if(items.length===0){
+		
+			alert("There are no tasks to delete");
+			return
+		}else {
+			setItems([])
+		}
+	
+	;
 }
 	return (
 		<div className="wrapper">
